@@ -14,7 +14,9 @@ class _CurrencyConverterMaterialPageState
   final TextEditingController textEditingController = TextEditingController();
 
   void convert() {
-    result = double.parse(textEditingController.text) * 80;
+    if (textEditingController.text.isEmpty) return;
+
+    result = double.parse(textEditingController.text) * 550;
     setState(() {});
   }
 
@@ -26,70 +28,101 @@ class _CurrencyConverterMaterialPageState
 
   @override
   Widget build(BuildContext context) {
-    final border = OutlineInputBorder(
-      borderSide: const BorderSide(
-        width: 2.0,
-        style: BorderStyle.solid,
-      ),
-      borderRadius: BorderRadius.circular(5),
-    );
-
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
-      appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
-        elevation: 0,
-        title: const Text('Currency Converter'),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'INR ${result != 0 ? result.toStringAsFixed(3) : result.toStringAsFixed(0)}',
-                style: const TextStyle(
-                  fontSize: 55,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 255, 255, 255),
-                ),
-              ),
-              TextField(
-                controller: textEditingController,
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
-                decoration: InputDecoration(
-                  hintText: 'Please enter the amount in USD',
-                  hintStyle: const TextStyle(
-                    color: Colors.black,
-                  ),
-                  prefixIcon: const Icon(Icons.monetization_on_outlined),
-                  prefixIconColor: Colors.black,
-                  filled: true,
-                  fillColor: Colors.white,
-                  focusedBorder: border,
-                  enabledBorder: border,
-                ),
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: convert,
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-                child: const Text('Convert'),
-              ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF0F2027),
+              Color(0xFF203A43),
+              Color(0xFF2C5364),
             ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Card(
+                elevation: 12,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        'Currency Converter',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
+                      /// Résultat
+                      Text(
+                        'CFA ${result == 0 ? '0' : result.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF2C5364),
+                        ),
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      /// Champ de saisie
+                      TextField(
+                        controller: textEditingController,
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Amount in USD',
+                          prefixIcon: const Icon(Icons.attach_money),
+                          filled: true,
+                          fillColor: Colors.grey.shade100,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      /// Bouton
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: convert,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF2C5364),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text(
+                            'Convert',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ),
