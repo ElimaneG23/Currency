@@ -13,10 +13,31 @@ class _CurrencyConverterMaterialPageState
   double result = 0;
   final TextEditingController textEditingController = TextEditingController();
 
+  void onAmountChanged(String value) {
+    if (value.isEmpty) {
+      setState(() {
+        result = 0;
+      });
+      return;
+    }
+
+    final amount = double.tryParse(value);
+    if (amount == null) {
+      setState(() {
+        result = 0;
+      });
+      return;
+    }
+
+    setState(() {
+      result = amount * 558;
+    });
+  }
+
   void convert() {
     if (textEditingController.text.isEmpty) return;
 
-    result = double.parse(textEditingController.text) * 550;
+    result = double.parse(textEditingController.text) * 558;
     setState(() {});
   }
 
@@ -32,11 +53,7 @@ class _CurrencyConverterMaterialPageState
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color(0xFF0F2027),
-              Color(0xFF203A43),
-              Color(0xFF2C5364),
-            ],
+            colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -82,6 +99,7 @@ class _CurrencyConverterMaterialPageState
                         keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
                         ),
+                        onChanged: onAmountChanged,
                         decoration: InputDecoration(
                           hintText: 'Amount in USD',
                           prefixIcon: const Icon(Icons.attach_money),
@@ -94,30 +112,7 @@ class _CurrencyConverterMaterialPageState
                         ),
                       ),
 
-                      const SizedBox(height: 20),
-
-                      /// Bouton
-                      SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: convert,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF2C5364),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: const Text(
-                            'Convert',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
+                      
                     ],
                   ),
                 ),
